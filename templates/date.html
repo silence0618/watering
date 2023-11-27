@@ -1,0 +1,25 @@
+<div id="date"></div>
+<div id="click-count">Click Count: 0</div>
+<script>
+    function updateDateAndCount() {
+        let today = new Date();
+        let dateElement = document.getElementById('date');
+        dateElement.textContent = 'Date: ' + today.toDateString();
+
+        let clickCount = 0;
+
+        function incrementClickCount(relayNumber) {
+            clickCount++;
+            document.getElementById('click-count').textContent = 'Click Count: ' + clickCount;
+        }
+
+        document.querySelectorAll('button').forEach(button => {
+            button.addEventListener('click', function() {
+                incrementClickCount(button.value);
+            });
+        });
+    }
+
+    window.onload = updateDateAndCount;
+</script>
+

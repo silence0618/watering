@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>4-Channel Relay Control</title>
+</head>
+<div id="date"></div>
+<div id="click-count">Click Count: 0</div>
+<script>
+    let lastDate = null;
+    function updateDateAndCount() {
+
+        // Define an object to store click counts for each relay
+        let clickCounts = {
+            1: 0,
+            2: 0,
+            3: 0,
+            4: 0
+        };
+
+        function incrementClickCount(relayNumber) {
+            clickCounts[relayNumber]++;
+            document.getElementById('count-' + relayNumber).textContent = clickCounts[relayNumber];
+        }
+        document.querySelectorAll('button').forEach(button => {
+            button.addEventListener('click', function() {
+                incrementClickCount(button.value);
+            });
+        });
+        function checkForDateChange() {
+            let today = new Date();
+            let dateString = today.toDateString();
+
+            if (lastDate !== dateString) {
+                // Date has changed, reset click counts
+                clickCounts = { 1: 0, 2: 0, 3: 0, 4: 0 };
+                lastDate = dateString;
+            }
+
+            document.getElementById('date').textContent = 'Date: ' + dateString;
+        }
+
+        // Check for date change every second (adjust as needed)
+        setInterval(checkForDateChange, 1000);
+    }
+
+        window.onload = updateDateAndCount;
+</script>
+
+<body>
+    <h1>Control Panel</h1>
+    <form action="/control" method="post">
+        <button type="submit" name="relay" value="1" onclick="incrementClickCount(1)">Toggle Relay 1</button>
+        <span id="count-1">0</span><br>
+
+        <button type="submit" name="relay" value="2" onclick="incrementClickCount(2)">Toggle Relay 2</button>
+        <span id="count-2">0</span><br>
+
+        <button type="submit" name="relay" value="3" onclick="incrementClickCount(3)">Toggle Relay 3</button>
+        <span id="count-3">0</span><br>
+
+        <button type="submit" name="relay" value="4" onclick="incrementClickCount(4)">Toggle Relay 4</button>
+        <span id="count-4">0</span><br>
+    </form>
+
+</body>
+</html>
+
